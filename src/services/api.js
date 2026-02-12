@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/api";
+const API_URL = "https://leboncoin-backend-cvhr.onrender.com/api";
 
 // ══════════════════════════════════════════════
 // GESTION DES ANNONCES
