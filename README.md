@@ -1,16 +1,137 @@
-# React + Vite
+# LeBonCoin Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application React moderne avec Vite pour la plateforme LeBonCoin.
 
-Currently, two official plugins are available:
+## 📋 Stack Technologique
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** - Librairie UI
+- **Vite 7** - Build tool ultrarapide
+- **React Router v7** - Routage client
+- **TypeScript** - Type safety
+- **Vitest** - Framework de tests
+- **ESLint** - Linting & Code Quality
 
-## React Compiler
+## 🚀 Démarrage Rapide
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prérequis
+- Node.js 18+ et npm 9+
 
-## Expanding the ESLint configuration
+### Installation
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Développement
+```bash
+npm run dev          # Démarre dev server (http://localhost:5173)
+npm run lint         # Vérifie qualité du code
+npm run lint:fix     # Corrige automatiquement
+npm run type-check   # Vérification TypeScript
+npm run test         # Exécute les tests
+npm run test:ui      # Interface tests interactive
+npm run test:coverage # Génère coverage report
+```
+
+### Production
+```bash
+npm run build        # Build optimisé → dist/
+npm run preview      # Prévisualise la build
+```
+
+## 📁 Structure du Projet
+
+```
+src/
+├── components/      # Composants réutilisables (Navbar, AnnonceCard, etc.)
+├── pages/          # Pages complètes (Home, Details, etc.)
+├── services/       # Appels API et logique métier
+├── styles/         # Fichiers CSS/styles globaux
+├── assets/         # Images, icônes, fonts
+├── test/           # Configuration tests
+├── App.jsx         # Composant racine
+└── main.jsx        # Point d'entrée
+```
+
+## 🧪 Tests
+
+### Exécuter les tests
+```bash
+npm run test              # Mode watch
+npm run test:ui           # Dashboard interactif
+npm run test:coverage     # Couverture (target: 70%+)
+```
+
+### Écrire des tests
+```javascript
+// src/components/Navbar.test.jsx
+import { describe, it, expect } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import Navbar from './Navbar'
+
+describe('Navbar', () => {
+  it('should render navigation links', () => {
+    render(<Navbar />)
+    expect(screen.getByText(/home/i)).toBeInTheDocument()
+  })
+})
+```
+
+## 🔗 API Integration
+
+Backend API: `http://localhost:8080/api`
+
+```javascript
+// src/services/api.js
+const API_BASE = 'http://localhost:8080/api'
+
+export async function fetchAnnonces() {
+  const response = await fetch(`${API_BASE}/annonces`)
+  return response.json()
+}
+```
+
+## 📦 Bundle Optimization
+
+Vite génère un rapport `dist/stats.html` après chaque build montrant la taille du bundle.
+
+Target actuel: < 50KB gzip
+
+## 🛠️ Alias d'Import
+
+```javascript
+// Au lieu de: ../../../components/Navbar
+import Navbar from '@components/Navbar'
+
+// Aliases disponibles:
+// @components - src/components
+// @pages     - src/pages
+// @services  - src/services
+// @styles    - src/styles
+```
+
+## 📝 Commits & PR
+
+- Branch `main` - Production
+- Branch `dev` - Développement
+- Les PRs doivent passer linting, tests, et type-check
+
+## 🚨 Ressources
+
+- [Vite Docs](https://vite.dev/)
+- [React Docs](https://react.dev/)
+- [Vitest Docs](https://vitest.dev/)
+- [Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+
+## 📊 Métriques Cibles
+
+| Métrique | Target |
+|----------|--------|
+| Bundle Size (gzip) | < 50KB |
+| Test Coverage | 70%+ |
+| TypeScript Strict | ✅ |
+| Lighthouse Score | > 80 |
+| LCP (Largest Contentful Paint) | < 2.5s |
+
+---
+
+**Dernière mise à jour**: 2026-06-10 | Mainteneur: Équipe Dev

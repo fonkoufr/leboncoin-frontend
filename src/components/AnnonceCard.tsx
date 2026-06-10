@@ -1,10 +1,14 @@
-import React from 'react';
+import { FC } from 'react';
+import type { Annonce } from '../services/api';
 
-function AnnonceCard({ annonce }) {
+interface AnnonceCardProps {
+  annonce: Annonce;
+}
+
+const AnnonceCard: FC<AnnonceCardProps> = ({ annonce }) => {
   return (
     <div className="card" style={{ border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', marginBottom: '20px' }}>
       <img 
-        // On utilise l'URL Google Image enregistrée, ou une image par défaut
         src={annonce.imageUrl || "https://via.placeholder.com/300x200?text=Pas+de+photo"} 
         alt={annonce.titre}
         style={{ width: '100%', height: '200px', objectFit: 'cover' }}
