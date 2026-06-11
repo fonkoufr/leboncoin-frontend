@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef, FC } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getAnnonces, Annonce } from '../services/api';
 import { styles } from '../styles/theme';
+import { useCart } from '../context/CartContext';
 
 interface Category {
   id: string;
@@ -77,12 +78,22 @@ const SkeletonCard: FC = () => (
 
 const HomePage: FC<HomePageProps> = ({ searchQuery = '' }) => {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [slide, setSlide] = useState(0);
   const [slideKey, setSlideKey] = useState(0);
+  const [addedId, setAddedId] = useState<string | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const handleAddToCart = (e: React.MouseEvent, annonce: Annonce) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(annonce);
+    setAddedId(annonce.id);
+    setTimeout(() => setAddedId(null), 2000);
+  };
 
   const goToSlide = (idx: number) => {
     setSlide(idx);
@@ -232,11 +243,11 @@ const HomePage: FC<HomePageProps> = ({ searchQuery = '' }) => {
             </div>
           ) : (
             filtered.map((annonce, idx) => (
-              <Link
+              <div
                 key={annonce.id}
-                to={`/annonce/${annonce.id}`}
                 className="annonce-card card-anim"
-                style={{ animationDelay: `${(idx % 8) * 0.07}s` }}
+                style={{ animationDelay: `${(idx % 8) * 0.07}s`, cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
+                onClick={() => navigate(`/annonce/${annonce.id}`)}
               >
                 <div className="card-img-wrap">
                   {annonce.imageUrl ? (
@@ -261,7 +272,7 @@ const HomePage: FC<HomePageProps> = ({ searchQuery = '' }) => {
                   <span className="card-price">
                     {annonce.prix.toLocaleString('fr-FR')} €
                   </span>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
                     <span style={{ fontSize: 12, color: '#999' }}>📍 {annonce.ville || 'France'}</span>
                     {annonce.datePublication && (
                       <span style={{ fontSize: 11, color: '#bbb' }}>
@@ -269,8 +280,23 @@ const HomePage: FC<HomePageProps> = ({ searchQuery = '' }) => {
                       </span>
                     )}
                   </div>
+
+                  {/* Bouton panier */}
+                  <button
+                    onClick={e => handleAddToCart(e, annonce)}
+                    style={{
+                      marginTop: 'auto',
+                      width: '100%', padding: '9px 12px',
+                      background: addedId === annonce.id ? '#22c55e' : '#E8553A',
+                      color: '#fff', border: 'none', borderRadius: 10,
+                      fontSize: 13, fontWeight: 700, cursor: 'pointer',
+                      transition: 'background 0.2s',
+                    }}
+                  >
+                    {addedId === annonce.id ? '✓ Ajouté au panier !' : '🛒 Ajouter au panier'}
+                  </button>
                 </div>
-              </Link>
+              </div>
             ))
           )}
         </div>
