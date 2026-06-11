@@ -6,6 +6,9 @@ import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import AnnonceDetailPage from './pages/AnnonceDetailPage';
 import PostAnnoncePage from './pages/PostAnnoncePage';
+import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import Navbar from './components/Navbar';
 import ChatBot from './components/ChatBot';
 import Logo from './components/Logo';
@@ -53,6 +56,9 @@ const App: FC = () => {
           <Route path="/deposer" element={<PostAnnoncePage user={user} />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/payment-success" element={<PaymentSuccessPage />} />
         </Routes>
       </main>
       <ChatBot />

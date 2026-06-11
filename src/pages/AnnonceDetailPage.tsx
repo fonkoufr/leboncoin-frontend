@@ -1,6 +1,7 @@
 import { useEffect, useState, FC } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAnnonceById, Annonce } from '../services/api';
+import { useCart } from '../context/CartContext';
 
 const AnnonceDetailPage: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -9,6 +10,15 @@ const AnnonceDetailPage: FC = () => {
   const [loading, setLoading] = useState(true);
   const [contactVisible, setContactVisible] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    if (!annonce) return;
+    addToCart(annonce);
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2000);
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -120,6 +130,24 @@ const AnnonceDetailPage: FC = () => {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Add to cart */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <button
+              className="btn-primary"
+              style={{ width: '100%', padding: '14px', fontSize: 15, fontWeight: 700 }}
+              onClick={handleAddToCart}
+            >
+              {addedToCart ? '✓ Ajouté au panier !' : '🛒 Ajouter au panier'}
+            </button>
+            <button
+              className="btn-ghost"
+              style={{ width: '100%', padding: '12px', fontSize: 14 }}
+              onClick={() => { if (annonce) { addToCart(annonce); navigate('/checkout'); } }}
+            >
+              Acheter maintenant →
+            </button>
           </div>
 
           {/* Contact */}
